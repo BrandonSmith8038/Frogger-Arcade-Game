@@ -1,6 +1,6 @@
 # Frogger Arcade Game
 
-###Created By Brandon Smith
+### Created By Brandon Smith
 
 ### Description
 This project was created to be used for the completetion of the Udacity Front End Nano Degree Program.
