@@ -49,7 +49,7 @@ Enemy.prototype.colisionDetectionEnemy = function(theEnemy) {
         player.lifetracker();
         heart.giveHeart();
     }
-}
+};
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
@@ -60,13 +60,13 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function(x, y, speed) {
-    this.sprite = 'images/char-boy.png'
+    this.sprite = 'images/char-boy.png';
     this.x = x;
     this.y = y;
     this.speed = speed;
     this.livesAmount = 5;
 
-}
+};
 
 //Render the player
 Player.prototype.render = function() {
@@ -97,10 +97,10 @@ Player.prototype.levelUp =function() {
     }
     //Player wins when they beat level 10 
     if (level === 11) {
-        document.body.innerHTML = "<div id='winner'><p>you win</p><button id='playAgain'>Play Again</button></div>"
+        document.body.innerHTML = "<div id='winner'><p>you win</p><button id='playAgain'>Play Again</button></div>";
         playAgain();
     }
-}
+};
 
 Player.prototype.lifetracker = function() {
     if (this.livesAmount === 5) {
@@ -115,12 +115,12 @@ Player.prototype.lifetracker = function() {
         lifeText = "&#9825";
     } else if (this.livesAmount < 1) {
         //Player loses and is asked if they want to play again
-        document.body.innerHTML = "<div id='loser'><p>You Lose</p><button id='playAgain'>Play Again</button></div>"
+        document.body.innerHTML = "<div id='loser'><p>You Lose</p><button id='playAgain'>Play Again</button></div>";
         playAgain();
     }
 
     lifeDisplay.innerHTML = "<p>" + lifeText + "</p>";
-}
+};
 
 //Checks if player has reached the top of the screen and resets to the bottom
 //Checks if player is touching the side of the screen and stops movement.
@@ -136,19 +136,19 @@ Player.prototype.playerReset = function() {
         this.y = 650;
     }
     if (this.x < -22.5) {
-        this.x = -22.5
+        this.x = -22.5;
     }
     if (this.x > 725) {
-        this.x = 725
+        this.x = 725;
     }
-}
+};
 
 var Heart = function(x, y) {
     this.x = x;
     this.y = y;
     this.heartAvailable = false;
     this.sprite = 'images/Heart.png';
-}
+};
 //Render a heart on the screen
 Heart.prototype.render = function() {
     //Makes it so the heart does not show up on the first play and there is a 1 in three chance
@@ -166,17 +166,17 @@ Heart.prototype.colisionDetectionHeart = function (theHeart) {
         heart.y = 800;
         player.lifetracker();
     }
-}
+};
 
 Heart.prototype.update = function(dt) {
     //Checks if the player touched the heart
     this.colisionDetectionHeart(this);
-}
+};
 
 Heart.prototype.giveHeart = function() {
     showHeart = Math.random() * (4 - 1) + 1;
     heart.heartAvailable = true;
-}
+};
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -204,7 +204,7 @@ var heartX = Math.random() * (500 - 20) + 20;
 //Creates a random number between 1 and 3 that determines if the heart if the heart will be shown
 var showHeart = Math.random() * (4 - 1) + 1;
 //Creates a new heart however the render function in engine.js will only if showHeart === 1, equating to a 1 in 3 chance. 
-var heart = new Heart(heartX, heartY)
+var heart = new Heart(heartX, heartY);
 
 //Handles keypresses for the player
 Player.prototype.handleInput = function(key) {
@@ -222,11 +222,11 @@ Player.prototype.handleInput = function(key) {
     }
     this.playerReset();
 
-}
+};
 
 Player.prototype.update = function() {
     //Needed for engine.js
-}
+};
 
 //Decides if the player wants to play agian
 function playAgain() {
