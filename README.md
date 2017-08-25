@@ -2,6 +2,8 @@
 
 ### Created By Brandon Smith
 
+![App Screenshot](Screenshot.png)
+
 ### Description
 This project was created to be used for the completetion of the Udacity Front End Nano Degree Program.
 The app is clone of the classic frogger style arcade game
