@@ -2,7 +2,7 @@
 
 ### Created By Brandon Smith
 
-![App Screenshot](Screenshot.png)
+![App Screenshot](/Screenshot.png)
 
 ### Description
 This project was created to be used for the completetion of the Udacity Front End Nano Degree Program.
