@@ -2,7 +2,7 @@
 
 ### Created By Brandon Smith
 
-![App Screenshot](Frogger-Arcade-Game/Screenshot.PNG)
+![App Screenshot](https://github.com/BrandonSmith8038/Frogger-Arcade-Game/blob/master/Screenshot.PNG?raw=true)
 
 ### Description
 This project was created to be used for the completetion of the Udacity Front End Nano Degree Program.
