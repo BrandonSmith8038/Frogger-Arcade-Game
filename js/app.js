@@ -2,7 +2,6 @@ var level = 1;
 var levelDisplay = document.getElementById("level");
 levelDisplay.innerHTML = "Level " + level;
 
-livesAmount = 5
 //Used to display the amount of hearts player has left
 lifeText = "&#9825&#9825&#9825&#9825&#9825";
 var lifeDisplay = document.getElementById("lives");
@@ -36,9 +35,21 @@ Enemy.prototype.update = function(dt) {
 
     }
     //Check if the player has touched an enemy
-    colisionDetectionEnemy(this);
+    this.colisionDetectionEnemy(this);
 
 };
+
+Enemy.prototype.colisionDetectionEnemy = function(theEnemy) {
+    if (player.y + 73 <= theEnemy.y + 135 && player.x + 25 <= theEnemy.x + 88 && player.y + 131 >= theEnemy.y + 90 && player.x + 76 >= theEnemy.x + 11) {
+        //Reset player position if collision  
+        player.y = 650;
+        //radomize player starting location to make it harder
+        player.x = Math.random() * (700 - 100) + 100;
+        player.livesAmount --;
+        player.lifetracker();
+        heart.giveHeart();
+    }
+}
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
@@ -53,12 +64,84 @@ var Player = function(x, y, speed) {
     this.x = x;
     this.y = y;
     this.speed = speed;
+    this.livesAmount = 5;
 
 }
+
 //Render the player
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
+//Decides when a heart is available
+//Runs when the player reaches the top of the board
+//Keep track of the players lives and the amouunt of hearts shown on the screen
+Player.prototype.levelUp =function() {
+    level = level + 1;
+    levelDisplay.innerHTML = "Level " + level;
+    //radomize player starting location to make it harder
+    this.x = Math.random() * (700 - 100) + 100;
+    //increase the amount of bugs depending on the level
+    enemyAmount = 6 + level;
+
+    heart.giveHeart();
+
+    //Creates new enemies for the new level
+    for (var i = 0; i < enemyAmount; i++) {
+        //Y-axis Starting position for enemey
+        var enemyStartY = Math.random() * (435 - 45) + 45;
+        //Enemy Speed
+        var enemySpeed = Math.random() * (300 - 100) + 100;
+        //Creates New Enemys based on the enemy amount 
+        allEnemies[i] = new Enemy(enemyStartX, enemyStartY, enemySpeed);
+    }
+    //Player wins when they beat level 10 
+    if (level === 11) {
+        document.body.innerHTML = "<div id='winner'><p>you win</p><button id='playAgain'>Play Again</button></div>"
+        playAgain();
+    }
+}
+
+Player.prototype.lifetracker = function() {
+    if (this.livesAmount === 5) {
+        lifeText = "&#9825&#9825&#9825&#9825&#9825";
+    } else if (this.livesAmount === 4) {
+        lifeText = "&#9825&#9825&#9825&#9825";
+    } else if (this.livesAmount === 3) {
+        lifeText = "&#9825&#9825&#9825";
+    } else if (this.livesAmount === 2) {
+        lifeText = "&#9825&#9825";
+    } else if (this.livesAmount === 1) {
+        lifeText = "&#9825";
+    } else if (this.livesAmount < 1) {
+        //Player loses and is asked if they want to play again
+        document.body.innerHTML = "<div id='loser'><p>You Lose</p><button id='playAgain'>Play Again</button></div>"
+        playAgain();
+    }
+
+    lifeDisplay.innerHTML = "<p>" + lifeText + "</p>";
+}
+
+//Checks if player has reached the top of the screen and resets to the bottom
+//Checks if player is touching the side of the screen and stops movement.
+//Resets the player if they reach the top of the screen back to the bottom
+//Stops player movement if the reach the bottom,left or right side of the screen
+Player.prototype.playerReset = function() {
+    if (this.y < -1) {
+        this.y = 650;
+        this.levelUp();
+        heart.giveHeart();
+    }
+    if (this.y > 650) {
+        this.y = 650;
+    }
+    if (this.x < -22.5) {
+        this.x = -22.5
+    }
+    if (this.x > 725) {
+        this.x = 725
+    }
+}
 
 var Heart = function(x, y) {
     this.x = x;
@@ -75,9 +158,24 @@ Heart.prototype.render = function() {
 
 };
 
+Heart.prototype.colisionDetectionHeart = function (theHeart) {
+    if (player.y + 73 <= theHeart.y + 135 && player.x + 25 <= theHeart.x + 88 && player.y + 131 >= theHeart.y + 90 && player.x + 76 >= theHeart.x + 11) {
+        player.livesAmount ++;
+        //sends the heart off the screen
+        heart.x = 800;
+        heart.y = 800;
+        player.lifetracker();
+    }
+}
+
 Heart.prototype.update = function(dt) {
     //Checks if the player touched the heart
-    colisionDetectionHeart(this);
+    this.colisionDetectionHeart(this);
+}
+
+Heart.prototype.giveHeart = function() {
+    showHeart = Math.random() * (4 - 1) + 1;
+    heart.heartAvailable = true;
 }
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -122,110 +220,12 @@ Player.prototype.handleInput = function(key) {
     if (key == 'down') {
         this.y += 83;
     }
-    playerReset();
+    this.playerReset();
 
 }
 
 Player.prototype.update = function() {
     //Needed for engine.js
-}
-
-//Decides when a heart is available
-function giveHeart() {
-    showHeart = Math.random() * (4 - 1) + 1;
-    heart.heartAvailable = true;
-}
-
-//Runs when the player reaches the top of the board
-function levelUp() {
-    level = level + 1;
-    levelDisplay.innerHTML = "Level " + level;
-    //radomize player starting location to make it harder
-    player.x = Math.random() * (700 - 100) + 100;
-    //increase the amount of bugs depending on the level
-    enemyAmount = 6 + level;
-
-    giveHeart();
-
-    //Creates new enemies for the new level
-    for (var i = 0; i < enemyAmount; i++) {
-        //Y-axis Starting position for enemey
-        var enemyStartY = Math.random() * (435 - 45) + 45;
-        //Enemy Speed
-        var enemySpeed = Math.random() * (300 - 100) + 100;
-        //Creates New Enemys based on the enemy amount 
-        allEnemies[i] = new Enemy(enemyStartX, enemyStartY, enemySpeed);
-    }
-    //Player wins when they beat level 10 
-    if (level === 11) {
-        document.body.innerHTML = "<div id='winner'><p>you win</p><button id='playAgain'>Play Again</button></div>"
-        playAgain();
-    }
-}
-
-//Keep track of the players lives and the amouunt of hearts shown on the screen
-function lifetracker() {
-    if (livesAmount === 5) {
-        lifeText = "&#9825&#9825&#9825&#9825&#9825";
-    } else if (livesAmount === 4) {
-        lifeText = "&#9825&#9825&#9825&#9825";
-    } else if (livesAmount === 3) {
-        lifeText = "&#9825&#9825&#9825";
-    } else if (livesAmount === 2) {
-        lifeText = "&#9825&#9825";
-    } else if (livesAmount === 1) {
-        lifeText = "&#9825";
-    } else if (livesAmount < 1) {
-        //Player loses and is asked if they want to play again
-        document.body.innerHTML = "<div id='loser'><p>You Lose</p><button id='playAgain'>Play Again</button></div>"
-        playAgain();
-    }
-
-    lifeDisplay.innerHTML = "<p>" + lifeText + "</p>";
-}
-
-function colisionDetectionEnemy(theEnemy) {
-    if (player.y + 73 <= theEnemy.y + 135 && player.x + 25 <= theEnemy.x + 88 && player.y + 131 >= theEnemy.y + 90 && player.x + 76 >= theEnemy.x + 11) {
-        //Reset player position if collision  
-        player.y = 650;
-        //radomize player starting location to make it harder
-        player.x = Math.random() * (700 - 100) + 100;
-        livesAmount = livesAmount - 1;
-        lifetracker();
-        giveHeart();
-    }
-}
-
-function colisionDetectionHeart(theHeart) {
-    if (player.y + 73 <= theHeart.y + 135 && player.x + 25 <= theHeart.x + 88 && player.y + 131 >= theHeart.y + 90 && player.x + 76 >= theHeart.x + 11) {
-        livesAmount = livesAmount + 1;
-        //sends the heart off the screen
-        heart.x = 800;
-        heart.y = 800;
-        lifetracker();
-    }
-}
-
-//Checks if player has reached the top of the screen and resets to the bottom
-//Checks if player is touching the side of the screen and stops movement.
-//Resets the player if they reach the top of the screen back to the bottom
-//Stops player movement if the reach the bottom,left or right side of the screen
-function playerReset() {
-    if (player.y < -1) {
-        player.y = 650;
-        levelUp();
-        giveHeart();
-    }
-    if (player.y > 650) {
-        player.y = 650;
-    }
-    if (player.x < -22.5) {
-        player.x = -22.5
-    }
-    if (player.x > 725) {
-        player.x = 725
-    }
-    console.log("player.x", player.x);
 }
 
 //Decides if the player wants to play agian
