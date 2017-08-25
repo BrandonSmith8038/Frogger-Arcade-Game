@@ -111,16 +111,16 @@ var heart = new Heart(heartX, heartY)
 //Handles keypresses for the player
 Player.prototype.handleInput = function(key) {
     if (key == 'left') {
-        this.x -= this.speed;
+        this.x -= 101;
     }
     if (key == 'up') {
-        this.y -= this.speed - 20;
+        this.y -= 83;
     }
     if (key == 'right') {
-        this.x += this.speed;
+        this.x += 101;
     }
     if (key == 'down') {
-        this.y += this.speed - 20;
+        this.y += 83;
     }
     playerReset();
 
