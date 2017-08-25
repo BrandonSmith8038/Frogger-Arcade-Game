@@ -35,12 +35,12 @@ Enemy.prototype.update = function(dt) {
 
     }
     //Check if the player has touched an enemy
-    this.colisionDetectionEnemy(this);
+    this.colisionDetectionEnemy();
 
 };
 
-Enemy.prototype.colisionDetectionEnemy = function(theEnemy) {
-    if (player.y + 73 <= theEnemy.y + 135 && player.x + 25 <= theEnemy.x + 88 && player.y + 131 >= theEnemy.y + 90 && player.x + 76 >= theEnemy.x + 11) {
+Enemy.prototype.colisionDetectionEnemy = function() {
+    if (player.y + 73 <= this.y + 135 && player.x + 25 <= this.x + 88 && player.y + 131 >= this.y + 90 && player.x + 76 >= this.x + 11) {
         //Reset player position if collision  
         player.y = 650;
         //radomize player starting location to make it harder
@@ -158,24 +158,24 @@ Heart.prototype.render = function() {
 
 };
 
-Heart.prototype.colisionDetectionHeart = function (theHeart) {
-    if (player.y + 73 <= theHeart.y + 135 && player.x + 25 <= theHeart.x + 88 && player.y + 131 >= theHeart.y + 90 && player.x + 76 >= theHeart.x + 11) {
+Heart.prototype.colisionDetectionHeart = function () {
+    if (player.y + 73 <= this.y + 135 && player.x + 25 <= this.x + 88 && player.y + 131 >= this.y + 90 && player.x + 76 >= this.x + 11) {
         player.livesAmount ++;
         //sends the heart off the screen
-        heart.x = 800;
-        heart.y = 800;
+        this.x = 800;
+        this.y = 800;
         player.lifetracker();
     }
 };
 
 Heart.prototype.update = function(dt) {
     //Checks if the player touched the heart
-    this.colisionDetectionHeart(this);
+    this.colisionDetectionHeart();
 };
 
 Heart.prototype.giveHeart = function() {
     showHeart = Math.random() * (4 - 1) + 1;
-    heart.heartAvailable = true;
+    this.heartAvailable = true;
 };
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
